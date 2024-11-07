@@ -8,6 +8,7 @@ import { RegisterDialogComponent } from "@/components/shared/Dialog/RegisterDial
 export default function HeaderProfile() {
     const [isDialogOpen, setDialogOpen] = useState(false);
     const [isLoginForm, setIsLoginForm] = useState(true);
+
     return (
         <DynamicDialog
             isOpen={isDialogOpen}
@@ -25,7 +26,11 @@ export default function HeaderProfile() {
                 </Button>
             }
         >
-            {isLoginForm ? <LoginDialogComponent /> : <RegisterDialogComponent />}
+            {isLoginForm ? (
+                <LoginDialogComponent {...{ setDialogOpen }} />
+            ) : (
+                <RegisterDialogComponent {...{ setIsLoginForm }} />
+            )}
             {isLoginForm ? (
                 <Button
                     type={"button"}

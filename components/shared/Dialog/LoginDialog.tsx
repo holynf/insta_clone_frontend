@@ -7,12 +7,11 @@ import { Form } from "@/components/ui/form";
 
 import FormFieldInput from "@/components/shared/Form/FormFieldInput";
 import fetchData from "@/utils/fetchData";
-import { AuthCredentialsType } from "@/types/auth/types";
+import { AuthLoginCredentialsType } from "@/types/auth/types";
 import { useDispatch } from "react-redux";
 import { setToken, setUserId } from "@/store/userSlice";
 import { toast } from "react-toastify";
-import { useState } from "react";
-import { clsx } from "clsx";
+import { Dispatch, SetStateAction, useState } from "react";
 import { LoadingSpinner } from "@/components/shared/LoadingSvg";
 
 const formSchema = z.object({
@@ -28,7 +27,11 @@ const formSchema = z.object({
     }),
 });
 
-export function LoginDialogComponent() {
+export function LoginDialogComponent({
+    setDialogOpen,
+}: {
+    setDialogOpen: Dispatch<SetStateAction<boolean>>;
+}) {
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
     const form = useForm<z.infer<typeof formSchema>>({
@@ -43,7 +46,7 @@ export function LoginDialogComponent() {
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsLoading(true);
         try {
-            const login: AuthCredentialsType = await fetchData("/auth/login", {
+            const login: AuthLoginCredentialsType = await fetchData("/auth/login", {
                 method: "POST",
                 body: values,
             });
@@ -52,12 +55,15 @@ export function LoginDialogComponent() {
                 dispatch(setUserId(login.userId));
                 dispatch(setToken(login.token));
             }
+            toast.success("Logged in successfully.");
+            setDialogOpen(false);
+            setIsLoading(false);
         } catch (error) {
             if (error instanceof Error) {
+                setIsLoading(false);
                 toast.error(error.message);
             }
         }
-        setIsLoading(false);
     }
 
     return (

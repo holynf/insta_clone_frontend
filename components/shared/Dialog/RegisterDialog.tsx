@@ -1,11 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import FormFieldInput from "@/components/shared/Form/FormFieldInput";
 import fetchData from "@/utils/fetchData";
+import { AuthRegisterCredentialsType } from "@/types/auth/types";
+import { setUserId } from "@/store/userSlice";
+import { toast } from "react-toastify";
+import { Dispatch, SetStateAction, useState } from "react";
+import { useDispatch } from "react-redux";
+import { LoadingSpinner } from "@/components/shared/LoadingSvg";
 
 const formSchema = z.object({
     username: z.string().min(3, {
@@ -23,7 +28,13 @@ const formSchema = z.object({
     }),
 });
 
-export function RegisterDialogComponent() {
+export function RegisterDialogComponent({
+    setIsLoginForm,
+}: {
+    setIsLoginForm: Dispatch<SetStateAction<boolean>>;
+}) {
+    const [isLoading, setIsLoading] = useState(false);
+    const dispatch = useDispatch();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -35,14 +46,25 @@ export function RegisterDialogComponent() {
     });
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values);
+        setIsLoading(true);
+        try {
+            const login: AuthRegisterCredentialsType = await fetchData("/auth/register", {
+                method: "POST",
+                body: values,
+            });
 
-        const register = await fetchData("/auth/register", {
-            method: "POST",
-            body: values,
-        });
-
-        console.log(register);
+            if (login?.userId) {
+                dispatch(setUserId(login.userId));
+            }
+            toast.success(login?.message);
+            setIsLoginForm(true);
+            setIsLoading(false);
+        } catch (error) {
+            if (error instanceof Error) {
+                toast.error(error.message);
+                setIsLoading(false);
+            }
+        }
     }
 
     return (
@@ -76,8 +98,8 @@ export function RegisterDialogComponent() {
                     placeholder={"Password"}
                     label={"Password"}
                 />
-                <Button type='submit' className={"btn-success"}>
-                    Submit
+                <Button type='submit' disabled={isLoading} className={"btn-success"}>
+                    {isLoading ? <LoadingSpinner /> : "Submit"}
                 </Button>
             </form>
         </Form>
