@@ -1,0 +1,5 @@
+@layer components {
+  .btn-success {
+    @apply w-full my-2 bg-green-500 text-white hover:bg-green-600 focus:ring-4 focus:ring-green-300 rounded-lg;
+  }
+}

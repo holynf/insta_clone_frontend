@@ -1,0 +1,15 @@
+.header-navbar {
+  @apply flex items-center justify-between p-4 bg-white shadow-md;
+
+  .header-navbar-logo {
+    @apply text-2xl font-bold text-gray-900;
+  }
+
+  .header-navbar-links {
+    @apply flex items-center space-x-6;
+
+    .navbar-link-icon {
+      @apply w-6 h-6 text-gray-800 hover:text-blue-500 transition-colors duration-200;
+    }
+  }
+}
