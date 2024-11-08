@@ -1,6 +1,6 @@
 import { apiUrl } from "@/utils/envPath";
 
-type FetchOptions = {
+export type FetchOptions = {
     method?: string;
     headers?: HeadersInit;
     body?: any;

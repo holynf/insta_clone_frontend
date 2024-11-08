@@ -16,7 +16,7 @@ export default function HeaderNavbar() {
             <Link href='/' aria-label='Notifications'>
                 <Heart className='navbar-link-icon' />
             </Link>
-            <Link href='/' aria-label='Profile'>
+            <Link href='/profile' aria-label='Profile'>
                 <User className='navbar-link-icon' />
             </Link>
         </div>

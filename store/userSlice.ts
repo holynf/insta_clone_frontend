@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { destroyCookie, setCookie } from "nookies";
 
 const userIdFromLocalStorage =
     typeof window !== "undefined" ? localStorage.getItem("userId") : null;
 const tokenFromLocalStorage = typeof window !== "undefined" ? localStorage.getItem("token") : null;
-
 const initialStateWithLocalStorage = {
     userId: userIdFromLocalStorage ? userIdFromLocalStorage : null,
     token: tokenFromLocalStorage ? tokenFromLocalStorage : null,
@@ -23,6 +23,10 @@ const userSlice = createSlice({
             state.token = action.payload;
             if (typeof window !== "undefined") {
                 localStorage.setItem("token", action.payload);
+                setCookie(null, "token", action.payload, {
+                    maxAge: 30 * 24 * 60 * 60,
+                    path: "/",
+                });
             }
         },
         clearUserId(state) {
@@ -35,6 +39,7 @@ const userSlice = createSlice({
             state.token = null;
             if (typeof window !== "undefined") {
                 localStorage.removeItem("token");
+                destroyCookie(null, "token");
             }
         },
     },

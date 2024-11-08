@@ -1,13 +1,50 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DynamicDialog from "@/components/shared/Dialog/DialogComponent";
 import { Button } from "@/components/ui/button";
 import { User } from "lucide-react";
 import { LoginDialogComponent } from "@/components/shared/Dialog/LoginDialog";
 import { RegisterDialogComponent } from "@/components/shared/Dialog/RegisterDialog";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
+import { UserType, UserTypeIncludeUserPosts } from "@/types/user/types";
+import { useRouter } from "next/navigation";
+import { fetchUserInformation } from "@/utils/api";
 
 export default function HeaderProfile() {
+    const { token } = useSelector((state: RootState) => state.user);
     const [isDialogOpen, setDialogOpen] = useState(false);
     const [isLoginForm, setIsLoginForm] = useState(true);
+    const [user, setUser] = useState<UserType>();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (!token) return;
+
+        const fetchData = async () => {
+            try {
+                const userInformation: UserTypeIncludeUserPosts = await fetchUserInformation(token);
+                setUser(userInformation.user);
+            } catch (error) {
+                console.error("Failed to fetch user information:", error);
+            }
+        };
+
+        fetchData();
+    }, [token]);
+
+    if (user) {
+        return (
+            <Button
+                variant='outline'
+                size='sm'
+                onClick={() => router.push("/profile")}
+                className={"header-navbar-profile"}
+            >
+                {user && user.username}
+                <User className='w-5 h-5 mr-2' />
+            </Button>
+        );
+    }
 
     return (
         <DynamicDialog

@@ -1,0 +1,38 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+@mixin ltr() {
+  @at-root [dir=ltr] & {
+    @content
+  }
+}
+
+html {
+  height: 100dvh;
+  overflow: hidden;
+}
+
+body {
+  font-size: clamp(0.875rem, 0.7371rem + 0.6897vw, 1.125rem);
+  height: 100% !important;
+
+
+  #__next,
+  [data-overlay-container] {
+    height: 100% !important;
+  }
+}
+
+.main {
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  display: block;
+  margin: 0 auto;
+  background-color: white;
+  box-shadow: 0 0 128px 0 rgba(black, .1);
+  @apply max-w-screen-lg border-0 text-base lg:text-lg xl:text-xl lg:border lg:border-t-0 lg:border-b-0 border-gray-200;
+}

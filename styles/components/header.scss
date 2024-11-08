@@ -1,5 +1,5 @@
 .header-navbar {
-  @apply flex items-center justify-between p-4 bg-white shadow-md;
+  @apply flex items-center max-w-screen-lg mx-auto justify-between p-4 bg-white shadow-md;
 
   .header-navbar-logo {
     @apply text-2xl font-bold text-gray-900;

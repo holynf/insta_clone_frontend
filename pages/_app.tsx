@@ -1,5 +1,5 @@
 import type { AppProps } from "next/app";
-import Header from "@/hoc/layout/header";
+import Header from "@/layout/header";
 import { Provider } from "react-redux";
 import { store } from "@/store";
 import { ToastContainer } from "react-toastify";
@@ -13,9 +13,11 @@ function App({ Component, pageProps }: AppProps) {
         <>
             <Provider store={store}>
                 <Header />
-                <Component {...pageProps} />
+                <div className={"main"}>
+                    <Component {...pageProps} />
+                </div>
             </Provider>
-            <ToastContainer position='top-right' autoClose={5000} />
+            <ToastContainer position='bottom-right' autoClose={5000} />
         </>
     );
 }
