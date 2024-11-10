@@ -5,11 +5,21 @@ export interface PostType {
     posted_by: UserPostedByType;
     photo: string;
     likes: string[];
-    comments: string[];
+    comments: PostCommentType[];
 }
 
 export interface UserPostedByType {
     id: string;
     name: string;
     username: string;
+}
+
+export interface PostCommentType {
+    _id: string;
+    posted_by: {
+        _id: string;
+        name: string;
+        email: string;
+    };
+    text: string;
 }

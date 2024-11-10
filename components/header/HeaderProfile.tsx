@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { UserType, UserTypeIncludeUserPosts } from "@/types/user/types";
 import { useRouter } from "next/navigation";
-import { fetchUserInformation } from "@/utils/api";
+import { getFetchUserInformation } from "@/utils/api";
 
 export default function HeaderProfile() {
     const { token } = useSelector((state: RootState) => state.user);
@@ -22,7 +22,8 @@ export default function HeaderProfile() {
 
         const fetchData = async () => {
             try {
-                const userInformation: UserTypeIncludeUserPosts = await fetchUserInformation(token);
+                const userInformation: UserTypeIncludeUserPosts =
+                    await getFetchUserInformation(token);
                 setUser(userInformation.user);
             } catch (error) {
                 console.error("Failed to fetch user information:", error);
