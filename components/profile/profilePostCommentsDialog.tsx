@@ -14,6 +14,7 @@ import { MessageCircle } from "lucide-react";
 import AvatarComponent from "@/components/shared/AvatarComponent";
 import FormFieldInput from "@/components/shared/Form/FormFieldInput";
 import { LoadingSpinner } from "@/components/shared/LoadingSvg";
+import { Form } from "@/components/ui/form";
 
 const formSchema = z.object({
     text: z.string().min(3, {
@@ -50,6 +51,7 @@ function PostCommentComponent({ post }: { post: PostType }) {
             await putFetchPostComment(token, body);
 
             toast.success("Comment Submitted successfully.");
+            form.reset({ text: "" });
             router.replace("/profile");
             setIsLoading(false);
         } catch (error) {
@@ -91,18 +93,27 @@ function PostCommentComponent({ post }: { post: PostType }) {
                         </div>
                     ))}
                 </div>
-                <form onSubmit={form.handleSubmit(onSubmit)}>
-                    <FormFieldInput
-                        inputType={"text"}
-                        form={form}
-                        name={"text"}
-                        placeholder={"text"}
-                        label={"text"}
-                    />
-                    <Button type='submit' disabled={isLoading} className={"btn-success"}>
-                        {isLoading ? <LoadingSpinner /> : "Submit"}
-                    </Button>
-                </form>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)}>
+                        <div className={"grid grid-cols-4 gap-2 items-center"}>
+                            <div className={"col-span-3"}>
+                                <FormFieldInput
+                                    inputType={"text"}
+                                    form={form}
+                                    name={"text"}
+                                    placeholder={"text"}
+                                />
+                            </div>
+                            <Button
+                                type='submit'
+                                disabled={isLoading}
+                                className={"btn-success col-span-1"}
+                            >
+                                {isLoading ? <LoadingSpinner /> : "Submit"}
+                            </Button>
+                        </div>
+                    </form>
+                </Form>
             </>
         </DynamicDialog>
     );

@@ -37,6 +37,7 @@ const userSlice = createSlice({
         },
         clearToken(state) {
             state.token = null;
+            state.userId = null;
             if (typeof window !== "undefined") {
                 localStorage.removeItem("token");
                 destroyCookie(null, "token");

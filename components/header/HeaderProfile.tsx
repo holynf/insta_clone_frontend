@@ -11,13 +11,14 @@ import { useRouter } from "next/navigation";
 import { getFetchUserInformation } from "@/utils/api";
 
 export default function HeaderProfile() {
-    const { token } = useSelector((state: RootState) => state.user);
+    const { token, userId } = useSelector((state: RootState) => state.user);
     const [isDialogOpen, setDialogOpen] = useState(false);
     const [isLoginForm, setIsLoginForm] = useState(true);
     const [user, setUser] = useState<UserType>();
     const router = useRouter();
 
     useEffect(() => {
+        setUser(undefined);
         if (!token) return;
 
         const fetchData = async () => {
@@ -31,7 +32,7 @@ export default function HeaderProfile() {
         };
 
         fetchData();
-    }, [token]);
+    }, [token, userId]);
 
     if (user) {
         return (
