@@ -19,3 +19,11 @@ export function putFetchPostComment(token: string, body: { postId: string; text:
     if (!token) return null;
     return fetchAuthorizedData(`/posts/comment`, token, { body, method: "PUT" });
 }
+
+export function postCreatePost(token: string, body: FormData) {
+    if (!token) return null;
+    return fetchAuthorizedData(`posts/create`, token, {
+        body: body,
+        method: "POST",
+    });
+}

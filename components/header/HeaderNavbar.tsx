@@ -10,7 +10,7 @@ export default function HeaderNavbar() {
             <Link href='/' aria-label='Search'>
                 <Search className='navbar-link-icon' />
             </Link>
-            <Link href='/' aria-label='Create Post'>
+            <Link href='/post/add' aria-label='Create Post'>
                 <PlusSquare className='navbar-link-icon' />
             </Link>
             <Link href='/' aria-label='Notifications'>
